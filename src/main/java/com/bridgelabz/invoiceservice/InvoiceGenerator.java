@@ -1,5 +1,8 @@
 package com.bridgelabz.invoiceservice;
 
+import java.util.Arrays;
+import java.util.stream.DoubleStream;
+
 public class InvoiceGenerator {
     private static final int MINIMUM_COST_PER_KM = 10;
     private static final int MINIMUM_COST_PER_MINUTE = 1;
@@ -22,5 +25,14 @@ public class InvoiceGenerator {
             return MINIMUM_FARE;
         }
         return totalFare;
+    }
+    /**
+     * @param rides
+     * @return total Fare for multiple rides
+     */
+    public double calculateFare(Ride[] rides) {
+        return Arrays.stream(rides).
+                flatMapToDouble(ride -> DoubleStream.of(calculateFare(ride.getDistance(), ride.getTime())))
+                .sum();
     }
 }
