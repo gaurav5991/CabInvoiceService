@@ -44,15 +44,15 @@ public class InvoiceServiceTest {
     }
 
     /**
-     * Test Case to check Invoice Summary of multiple rides of given UserID
+     * Test Case to check Invoice Summary of multiple rides for Normal and Premium Ride
      */
     @Test
     public void givenMultipleRidesShouldReturnInvoiceSummary() {
         String userId = "abc@gmail.com";
-        Ride[] rides = {new Ride(2.0, 5), new Ride(0.1, 1)};
+        Ride[] rides = {new Ride(2.0, 5,RideCategory.NORMAL), new Ride(0.1, 1,RideCategory.PREMIUM)};
         invoiceGenerator.addRides(userId,rides);
         InvoiceSummary summary = invoiceGenerator.getInvoiceSummary(userId);
-        InvoiceSummary ExpectedInvoiceSummary = new InvoiceSummary(2, 30.0);
+        InvoiceSummary ExpectedInvoiceSummary = new InvoiceSummary(2, 45.0);
         Assert.assertEquals(ExpectedInvoiceSummary, summary);
     }
 }
