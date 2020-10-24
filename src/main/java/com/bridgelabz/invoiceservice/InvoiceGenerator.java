@@ -7,11 +7,19 @@ public class InvoiceGenerator {
     private static final int MINIMUM_COST_PER_KM = 10;
     private static final int MINIMUM_COST_PER_MINUTE = 1;
     private static final int MINIMUM_FARE = 5;
+    private RideRepository rideRepository;
 
     /*Function to print Welcome message*/
     public boolean printWelcomeMessage() {
         System.out.println("Welcome to Cab Invoice Generation System");
         return true;
+    }
+
+    /**
+     * Constructor to initialize Repository
+     */
+    public InvoiceGenerator() {
+        this.rideRepository = new RideRepository();
     }
 
     /**
@@ -33,5 +41,23 @@ public class InvoiceGenerator {
                 flatMapToDouble(ride -> DoubleStream.of(calculateFare(ride.getDistance(), ride.getTime())))
                 .sum();
         return new InvoiceSummary(rides.length, totalFare);
+    }
+
+    /**
+     * Method to add rides to List
+     *
+     * @param userId
+     * @param rides
+     */
+    public void addRides(String userId, Ride[] rides) {
+        rideRepository.addRides(userId, rides);
+    }
+
+    /**
+     * @param userId
+     * @return Invoice Summary for given User Id
+     */
+    public InvoiceSummary getInvoiceSummary(String userId) {
+        return this.calculateFare(rideRepository.getRides(userId));
     }
 }
