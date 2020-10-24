@@ -1,10 +1,16 @@
 package com.bridgelabz.invoiceservice;
 
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 
 public class InvoiceServiceTest {
-    InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+    InvoiceGenerator invoiceGenerator = null;
+
+    @Before
+    public void setUp() {
+        invoiceGenerator = new InvoiceGenerator();
+    }
 
     /**
      * TestCase for printWelcome Message
@@ -43,7 +49,7 @@ public class InvoiceServiceTest {
     @Test
     public void givenMultipleRidesShouldReturnTotalFare() {
         Ride[] rides = {new Ride(2.0, 5), new Ride(0.1, 1)};
-        double fare = generator.calculateFare(rides);
+        double fare = invoiceGenerator.calculateFare(rides);
         Assert.assertEquals(fare, 30, 0.0);
     }
 }
