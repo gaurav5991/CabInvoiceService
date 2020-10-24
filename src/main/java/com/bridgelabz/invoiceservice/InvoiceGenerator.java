@@ -1,8 +1,5 @@
 package com.bridgelabz.invoiceservice;
 
-import java.util.Arrays;
-import java.util.stream.DoubleStream;
-
 public class InvoiceGenerator {
     private static final int MINIMUM_COST_PER_KM = 10;
     private static final int MINIMUM_COST_PER_MINUTE = 1;
@@ -13,13 +10,6 @@ public class InvoiceGenerator {
     public boolean printWelcomeMessage() {
         System.out.println("Welcome to Cab Invoice Generation System");
         return true;
-    }
-
-    /**
-     * Constructor to initialize Repository
-     */
-    public InvoiceGenerator() {
-        this.rideRepository = new RideRepository();
     }
 
     /**
@@ -37,9 +27,11 @@ public class InvoiceGenerator {
      * @return Invoice Summary for multiple rides
      */
     public InvoiceSummary calculateFare(Ride[] rides) {
-        double totalFare = Arrays.stream(rides).
-                flatMapToDouble(ride -> DoubleStream.of(calculateFare(ride.getDistance(), ride.getTime())))
-                .sum();
+        double totalFare = 0;
+        for (Ride ride : rides) {
+            totalFare += this.calculateFare(ride.getDistance(), ride.getTime());
+            totalFare += ride.getRideCategory().calculateCostOfCabRide(ride);
+        }
         return new InvoiceSummary(rides.length, totalFare);
     }
 
@@ -59,5 +51,9 @@ public class InvoiceGenerator {
      */
     public InvoiceSummary getInvoiceSummary(String userId) {
         return this.calculateFare(rideRepository.getRides(userId));
+    }
+
+    public void setRideRepository(RideRepository rideRepository) {
+        this.rideRepository = rideRepository;
     }
 }
