@@ -5,6 +5,7 @@ import org.junit.Test;
 
 public class InvoiceServiceTest {
     InvoiceGenerator invoiceGenerator = new InvoiceGenerator();
+
     /**
      * TestCase for printWelcome Message
      */
@@ -13,6 +14,7 @@ public class InvoiceServiceTest {
         boolean message = invoiceGenerator.printWelcomeMessage();
         Assert.assertTrue(message);
     }
+
     /**
      * Test Case to check Fare for given Distance and Time
      */
@@ -33,5 +35,15 @@ public class InvoiceServiceTest {
         int time = 1;
         double fare = invoiceGenerator.calculateFare(distance, time);
         Assert.assertEquals(5, fare, 0.0);
+    }
+
+    /**
+     * Test Case to check aggregate Fare of multiple rides for given Distance and Time
+     */
+    @Test
+    public void givenMultipleRidesShouldReturnTotalFare() {
+        Ride[] rides = {new Ride(2.0, 5), new Ride(0.1, 1)};
+        double fare = generator.calculateFare(rides);
+        Assert.assertEquals(fare, 30, 0.0);
     }
 }
