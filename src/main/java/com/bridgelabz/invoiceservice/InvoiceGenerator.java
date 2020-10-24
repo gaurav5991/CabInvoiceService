@@ -21,15 +21,17 @@ public class InvoiceGenerator {
      */
     public double calculateFare(double distance, int time) {
         double totalFare = distance * MINIMUM_COST_PER_KM + time * MINIMUM_COST_PER_MINUTE;
-        return Math.max(totalFare,MINIMUM_FARE);
+        return Math.max(totalFare, MINIMUM_FARE);
     }
+
     /**
      * @param rides
-     * @return total Fare for multiple rides
+     * @return Invoice Summary for multiple rides
      */
-    public double calculateFare(Ride[] rides) {
-        return Arrays.stream(rides).
+    public InvoiceSummary calculateFare(Ride[] rides) {
+        double totalFare = Arrays.stream(rides).
                 flatMapToDouble(ride -> DoubleStream.of(calculateFare(ride.getDistance(), ride.getTime())))
                 .sum();
+        return new InvoiceSummary(rides.length, totalFare);
     }
 }
